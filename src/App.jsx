@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Orb from "./Orb";
 
 const HF_URL = "https://api-inference.huggingface.co/models/TON_ORG/TON_MODELE";
 const HF_TOKEN = "hf_TA_CLE_ICI"; // remplace par ton token HF
+const initialIsMobile =
+  typeof window !== "undefined" ? window.innerWidth < 900 : false;
 
 function App() {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [hasSent, setHasSent] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 900 : false
-  );
+  const [isMobile, setIsMobile] = useState(() => initialIsMobile);
+  const [sidebarOpen, setSidebarOpen] = useState(() => !initialIsMobile);
+  const prevIsMobile = useRef(initialIsMobile);
 
   useEffect(() => {
     function handleResize() {
@@ -20,6 +21,14 @@ function App() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (prevIsMobile.current !== isMobile) {
+      // On mobile, hide the sidebar by default; on desktop, keep it open.
+      setSidebarOpen(!isMobile);
+      prevIsMobile.current = isMobile;
+    }
+  }, [isMobile]);
 
   async function sendMessageToBackend(text) {
     const res = await fetch(HF_URL, {
@@ -134,7 +143,7 @@ function App() {
           transition: "transform 0.25s ease, opacity 0.25s ease",
           zIndex: 30,
           padding: "18px 14px",
-          display: isMobile ? "flex" : sidebarOpen ? "flex" : "none",
+          display: sidebarOpen ? "flex" : "none",
           flexDirection: "column",
           gap: "12px",
         }}
@@ -162,7 +171,7 @@ function App() {
                 letterSpacing: "0.02em",
               }}
             >
-              MA
+              OA
             </div>
             <div>
               <div
@@ -172,7 +181,7 @@ function App() {
                   color: "#e2e8f0",
                 }}
               >
-                Meme Assistant
+                Octaia Assistant
               </div>
               <div
                 style={{
@@ -277,17 +286,18 @@ function App() {
       <main
         style={{
           flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        padding: isMobile ? "14px 12px 16px" : "20px 22px 22px",
-        gap: isMobile ? "8px" : "12px",
-        minWidth: 0,
-        height: "auto",
-        overflowY: "auto",
-        position: "relative",
-        paddingBottom: isMobile ? "10px" : "12px",
-      }}
-    >
+          display: "flex",
+          flexDirection: "column",
+          padding: isMobile ? "16px 14px 18px" : "20px 24px 24px",
+          gap: isMobile ? "10px" : "14px",
+          minWidth: 0,
+          width: "100%",
+          height: "auto",
+          overflowY: "auto",
+          position: "relative",
+          paddingBottom: isMobile ? "12px" : "14px",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -330,13 +340,18 @@ function App() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: isMobile ? "12px 0" : "20px 0",
+              padding: isMobile ? "16px 0" : "22px 0",
               flexDirection: "column",
               gap: "10px",
               flex: 1,
             }}
           >
-            <div style={{ transform: "scale(1.8)", transformOrigin: "center" }}>
+            <div
+              style={{
+                transform: isMobile ? "scale(1.35)" : "scale(1.8)",
+                transformOrigin: "center",
+              }}
+            >
               <Orb />
             </div>
 
@@ -356,7 +371,7 @@ function App() {
                   color: "#cfeff8",
                 }}
               >
-                Meme Assistant
+                Octaia Assistant
               </div>
               <div
                 style={{
@@ -389,8 +404,8 @@ function App() {
         >
           <div
             style={{
-              width: isMobile ? "100%" : "60%",
-              maxWidth: isMobile ? "100%" : "700px",
+              width: isMobile ? "100%" : "70%",
+              maxWidth: isMobile ? "100%" : "840px",
               display: "flex",
               flexDirection: "column",
               gap: "8px",
@@ -407,8 +422,8 @@ function App() {
               >
                 <div
                   style={{
-                    maxWidth: "72%",
-                    padding: "9px 13px",
+                    maxWidth: isMobile ? "88%" : "74%",
+                    padding: isMobile ? "10px 13px" : "10px 14px",
                     borderRadius: "16px",
                     fontSize: "13px",
                     lineHeight: 1.5,
@@ -453,8 +468,8 @@ function App() {
               display: "flex",
               alignItems: "center",
               gap: "10px",
-              width: isMobile ? "100%" : "60%",
-              maxWidth: isMobile ? "100%" : "700px",
+              width: isMobile ? "100%" : "70%",
+              maxWidth: isMobile ? "100%" : "840px",
             }}
           >
             <button
