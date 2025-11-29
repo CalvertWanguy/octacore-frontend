@@ -1,0 +1,17 @@
+@import url('https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #0f766e 45%, #14b8a6 100%);
+  color: #fff;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Ensure the app can stretch to full height and remain responsive */
+html, body, #root {
+  height: 100%;
+  min-height: 100%;
+}
+
+* { box-sizing: border-box; }
