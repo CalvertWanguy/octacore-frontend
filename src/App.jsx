@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Orb from "./Orb";
 
-const HF_URL = "https://api-inference.huggingface.co/models/TON_ORG/TON_MODELE";
-const HF_TOKEN = "hf_TA_CLE_ICI"; // remplace par ton token HF
+const HF_URL = import.meta.env.VITE_HF_URL;
+const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
 const initialIsMobile =
   typeof window !== "undefined" ? window.innerWidth < 900 : false;
 
